@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医療データダッシュボード</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="glass-header">
+            <div class="header-content">
+                <h1>Medical Insights</h1>
+                <div class="controls">
+                    <!-- Metric Selection Removed -->
+                    <div class="control-group">
+                        <label for="yearSlider">Year: <span id="yearLabel">2024年</span></label>
+                        <input type="range" id="yearSlider" min="2014" max="2024" step="2" value="2024">
+                    </div>
+                    <label for="prefectureSelect" style="margin-left: 1rem;">都道府県:</label>
+                    <select id="prefectureSelect">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <section class="card glass-card overview">
+                <h2>全国概況</h2>
+                <div class="metrics-row">
+                    <div class="metric-box">
+                        <span class="metric-label">総人口</span>
+                        <span class="metric-value" id="totalPopulation">-</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">平均医師密度</span>
+                        <span class="metric-sub">(人口10万人あたり)</span>
+                        <span class="metric-value" id="avgDocDensity">-</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">平均高齢化率</span>
+                        <span class="metric-value" id="avgAgingRate">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card glass-card chart-container">
+                <h2>相関分析: 医師密度 vs 高齢化率</h2>
+                <canvas id="scatterChart"></canvas>
+            </section>
+
+            <section class="card glass-card table-container">
+                <h2>地域別データ一覧</h2>
+                <div class="table-wrapper">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="code">コード</th>
+                                <th data-sort="name">地域名</th>
+                                <th data-sort="doctors">医師数</th>
+                                <th data-sort="population">人口</th>
+                                <th data-sort="density">医師密度<br><small>(/10万人)</small></th>
+                                <th data-sort="docPerElderly">高齢者あたり医師<br><small>(/1万人)</small></th>
+                                <th data-sort="aging">高齢化率</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="data.js?v=4"></script>
+    <script src="app.js?v=4"></script>
+</body>
+
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医療データ可視化 (Medical Data Visualization)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data.js"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm z-10 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-600 tracking-tight flex items-center gap-2">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                    </path>
+                </svg>
+                医療需給可視化マップ (都道府県別)
+            </h1>
+            <div class="flex items-center space-x-1 bg-blue-50 px-3 py-1 rounded-full">
+                <span class="text-sm font-bold text-blue-800">Target Year:</span>
+                <span id="yearLabel" class="text-xl font-bold text-blue-600 tabular-nums">2024</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col p-4 max-w-7xl mx-auto w-full space-y-6">
+
+        <!-- Controls -->
+        <div
+            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+
+            <!-- Metric Selector -->
+            <div class="flex flex-col space-y-1">
+                <label for="metricSelect" class="text-xs font-bold text-gray-400 uppercase tracking-wider">X軸
+                    (X-Axis)</label>
+                <div class="relative">
+                    <select id="metricSelect"
+                        class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none appearance-none cursor-pointer">
+                        <option value="doctors">医師数</option>
+                        <option value="hospitals">病院数</option>
+                        <option value="beds">病床数 (全体)</option>
+                        <option value="bedsPsych">病床数 (精神)</option>
+                        <option value="bedsCare">病床数 (療養)</option>
+                        <option value="bedsGeneral">病床数 (一般)</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prefecture Filter -->
+            <div class="flex flex-col space-y-1">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">都道府県絞り込み (Filter)</label>
+                <div class="relative">
+                    <select id="prefFilter"
+                        class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none appearance-none cursor-pointer">
+                        <option value="all">全て表示 (All Prefectures)</option>
+                        <!-- Options will be populated by JS -->
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Year Slider -->
+            <div class="flex flex-col space-y-1">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider">年度選択 (Year): <span
+                        id="sliderValue" class="text-blue-600">2024</span></label>
+                <input id="yearSlider" type="range" min="2014" max="2024" step="2" value="2024"
+                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                <div class="flex justify-between text-xs text-gray-400 px-1">
+                    <span>2014</span>
+                    <span>2024</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="bg-white p-4 rounded-xl shadow-lg border border-gray-100 relative min-h-[500px]">
+            <canvas id="scatterChart"></canvas>
+            <div class="absolute top-2 right-4 text-xs text-gray-400">
+                <span
+                    class="inline-block w-3 h-0.5 bg-gray-400 align-middle mr-1 border-t border-dashed border-gray-400"></span>
+                平均値 (Average)
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100">
+                <h2 class="text-lg font-bold text-gray-800">データ一覧 (Data Table)</h2>
+            </div>
+            <div class="overflow-x-auto max-h-[500px]">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                都道府県 (Prefecture)</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Y値 (<span id="tableYLabel">Doctors</span>)</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                X値 (高齢化率 Aging Rate)</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                総人口 (Total Pop)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Rows populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const chartCtx = document.getElementById('scatterChart').getContext('2d');
+        let currentYear = "2024";
+        let currentMetric = "doctors";
+        let currentFilter = "all"; // 'all' or prefCode
+
+        let chartInstance = null;
+        let globalAvgX = 0;
+        let globalAvgY = 0;
+
+        const metricLabels = {
+            doctors: "医師数",
+            hospitals: "病院数",
+            beds: "病床数 (全体)",
+            bedsPsych: "病床数 (精神)",
+            bedsCare: "病床数 (療養)",
+            bedsGeneral: "病床数 (一般)"
+        };
+
+        const prefNames = {
+            "01": "北海道", "02": "青森県", "03": "岩手県", "04": "宮城県", "05": "秋田県",
+            "06": "山形県", "07": "福島県", "08": "茨城県", "09": "栃木県", "10": "群馬県",
+            "11": "埼玉県", "12": "千葉県", "13": "東京都", "14": "神奈川県", "15": "新潟県",
+            "16": "富山県", "17": "石川県", "18": "福井県", "19": "山梨県", "20": "長野県",
+            "21": "岐阜県", "22": "静岡県", "23": "愛知県", "24": "三重県", "25": "滋賀県",
+            "26": "京都府", "27": "大阪府", "28": "兵庫県", "29": "奈良県", "30": "和歌山県",
+            "31": "鳥取県", "32": "島根県", "33": "岡山県", "34": "広島県", "35": "山口県",
+            "36": "徳島県", "37": "香川県", "38": "愛媛県", "39": "高知県", "40": "福岡県",
+            "41": "佐賀県", "42": "長崎県", "43": "熊本県", "44": "大分県", "45": "宮崎県",
+            "46": "鹿児島県", "47": "沖縄県"
+        };
+
+        // Plugin to draw quadrants
+        const quadrantsPlugin = {
+            id: 'quadrants',
+            afterDatasetsDraw(chart, args, options) {
+                const { ctx, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+
+                // If global averages valid
+                if (globalAvgX === 0 && globalAvgY === 0) return;
+
+                const xVal = x.getPixelForValue(globalAvgX);
+                const yVal = y.getPixelForValue(globalAvgY);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgba(107, 114, 128, 0.4)'; // gray-500, light
+                ctx.setLineDash([6, 6]);
+
+                // Vertical Line (Avg X)
+                if (xVal >= left && xVal <= right) {
+                    ctx.moveTo(xVal, top);
+                    ctx.lineTo(xVal, bottom);
+                }
+
+                // Horizontal Line (Avg Y)
+                if (yVal >= top && yVal <= bottom) {
+                    ctx.moveTo(left, yVal);
+                    ctx.lineTo(right, yVal);
+                }
+
+                ctx.stroke();
+                ctx.restore();
+            }
+        };
+
+        // Get Raw Secondary Area Data for all areas
+        function getSecondaryAreaData(year, metric) {
+            if (typeof medicalData === 'undefined' || !medicalData[year]) return [];
+            return medicalData[year].map(d => {
+                const codeStr = String(d.id).padStart(4, '0');
+                return {
+                    x: d.agingRate,
+                    y: d[metric],
+                    name: d.area,
+                    code: codeStr.substring(0, 2), // Pref code
+                    id: d.id,
+                    totalPop: d.totalPop
+                };
+            });
+        }
+
+        // Get Aggregated Prefecture Data
+        function getPrefectureData(year, metric) {
+            if (typeof medicalData === 'undefined' || !medicalData[year]) return [];
+
+            const rawData = medicalData[year];
+            const prefMap = {};
+
+            rawData.forEach(d => {
+                const codeStr = String(d.id).padStart(4, '0');
+                const prefCode = codeStr.substring(0, 2);
+
+                if (!prefMap[prefCode]) {
+                    prefMap[prefCode] = {
+                        code: prefCode,
+                        metricSum: 0,
+                        elderlySum: 0,
+                        totalPopSum: 0,
+                    };
+                }
+                prefMap[prefCode].metricSum += d[metric];
+                prefMap[prefCode].elderlySum += d.elderlyPop;
+                prefMap[prefCode].totalPopSum += d.totalPop;
+            });
+
+            return Object.values(prefMap).map(p => ({
+                x: (p.totalPopSum > 0 ? (p.elderlySum / p.totalPopSum) * 100 : 0),
+                y: p.metricSum,
+                name: prefNames[p.code] || `都道府県 ${p.code}`,
+                code: p.code,
+                totalPop: p.totalPopSum
+            }));
+        }
+
+        function populatePrefSelect() {
+            const select = document.getElementById('prefFilter');
+            select.innerHTML = '<option value="all">全て表示 (All Prefectures)</option>';
+            Object.keys(prefNames).sort().forEach(code => {
+                const opt = document.createElement('option');
+                opt.value = code;
+                opt.innerText = prefNames[code];
+                select.appendChild(opt);
+            });
+        }
+
+        function initChart() {
+            populatePrefSelect();
+
+            Chart.register(quadrantsPlugin);
+
+            chartInstance = new Chart(chartCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Data',
+                        data: [],
+                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                        borderColor: 'rgba(220, 38, 38, 1)',
+                        borderWidth: 1,
+                        pointRadius: 6,
+                        pointHoverRadius: 9
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                            padding: 12,
+                            callbacks: {
+                                label: function (context) {
+                                    return context.raw.name;
+                                },
+                                afterLabel: function (context) {
+                                    const p = context.raw;
+                                    return `X(高齢化率): ${p.x.toFixed(1)}% | Y: ${p.y.toLocaleString()}`;
+                                }
+                            }
+                        },
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: '',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1f2937'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: '高齢化率 (Aging Rate %)', font: { weight: 'bold' } },
+                            grid: { color: '#f3f4f6' },
+                            min: 0,
+                            max: 55
+                        },
+                        y: {
+                            title: { display: true, text: '', font: { weight: 'bold' } },
+                            grid: { color: '#f3f4f6' },
+                            beginAtZero: true
+                        }
+                    },
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        }
+
+        function updateChart() {
+            let displayData = [];
+            let chartTitle = "";
+            let pointColor = "";
+            let borderColor = "";
+
+            if (currentFilter === 'all') {
+                // Show Prefectures Aggregated
+                displayData = getPrefectureData(currentYear, currentMetric);
+                chartTitle = `都道府県別: ${metricLabels[currentMetric]} vs 高齢化率 (${currentYear})`;
+                pointColor = 'rgba(239, 68, 68, 0.7)'; // Red
+                borderColor = 'rgba(220, 38, 38, 1)';
+            } else {
+                // Show Secondary Areas for specific Prefecture
+                const allAreas = getSecondaryAreaData(currentYear, currentMetric);
+                displayData = allAreas.filter(d => d.code === currentFilter);
+
+                const prefName = prefNames[currentFilter] || currentFilter;
+                chartTitle = `${prefName}内の二次医療圏: ${metricLabels[currentMetric]} vs 高齢化率 (${currentYear})`;
+                pointColor = 'rgba(59, 130, 246, 0.7)'; // Blue
+                borderColor = 'rgba(37, 99, 235, 1)';
+            }
+
+            // Calculate Global Averages for currently displayed data
+            if (displayData.length > 0) {
+                const sumX = displayData.reduce((acc, d) => acc + d.x, 0);
+                const sumY = displayData.reduce((acc, d) => acc + d.y, 0);
+                globalAvgX = sumX / displayData.length;
+                globalAvgY = sumY / displayData.length;
+            } else {
+                globalAvgX = 0; globalAvgY = 0;
+            }
+
+            chartInstance.data.datasets[0].data = displayData;
+            chartInstance.data.datasets[0].backgroundColor = pointColor;
+            chartInstance.data.datasets[0].borderColor = borderColor;
+
+            chartInstance.options.plugins.title.text = chartTitle;
+            chartInstance.options.scales.y.title.text = metricLabels[currentMetric];
+
+            chartInstance.update();
+
+            document.getElementById('yearLabel').textContent = currentYear;
+            document.getElementById('sliderValue').textContent = currentYear;
+            document.getElementById('tableYLabel').innerText = metricLabels[currentMetric];
+
+            // Update Table
+            updateTable(displayData);
+        }
+
+        function updateTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            // Sort by Y descending (Metric Value)
+            const sorted = [...data].sort((a, b) => b.y - a.y);
+
+            sorted.forEach(d => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${d.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right font-mono">${d.y.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right font-mono">${d.x.toFixed(2)}%</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right font-mono">${d.totalPop.toLocaleString()}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Init
+        window.addEventListener('load', () => {
+            initChart();
+            updateChart();
+        });
+
+        // Listeners
+        document.getElementById('yearSlider').addEventListener('input', (e) => {
+            currentYear = e.target.value;
+            updateChart();
+        });
+
+        document.getElementById('metricSelect').addEventListener('change', (e) => {
+            currentMetric = e.target.value;
+            updateChart();
+        });
+
+        document.getElementById('prefFilter').addEventListener('change', (e) => {
+            currentFilter = e.target.value;
+            updateChart();
+        });
+
+    </script>
+</body>
+
+</html>
