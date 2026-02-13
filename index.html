@@ -224,12 +224,16 @@
                 ctx.fillStyle = 'rgba(107, 114, 128, 0.8)';
                 ctx.textAlign = 'left';
 
-                if (xVal > left + 100) { // Only if enough space
+                if (xVal > left + 100) { // Left-side labels (High Y)
+                    ctx.textAlign = 'left';
                     ctx.textBaseline = 'top';
                     ctx.fillText('供給過多 (Supply Excess)', left + 10, top + 10);
+                }
 
+                if (xVal < right - 100) { // Right-side labels (Low Y)
+                    ctx.textAlign = 'right';
                     ctx.textBaseline = 'bottom';
-                    ctx.fillText('需要過多 (Demand Excess)', left + 10, bottom - 10);
+                    ctx.fillText('需要過多 (Demand Excess)', right - 10, bottom - 10);
                 }
 
                 ctx.restore();
