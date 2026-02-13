@@ -43,9 +43,12 @@
         <!-- Controls -->
         <!-- Mobile Toggle Button -->
         <div class="md:hidden mb-4">
-            <button id="toggleControlsBtn" class="w-full bg-white p-3 rounded-lg shadow-sm border border-gray-200 text-blue-600 font-bold flex justify-center items-center gap-2 transition-colors hover:bg-gray-50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            <button id="toggleControlsBtn"
+                class="w-full bg-white p-3 rounded-lg shadow-sm border border-gray-200 text-blue-600 font-bold flex justify-center items-center gap-2 transition-colors hover:bg-gray-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                 </svg>
                 <span>検索・設定 (Filter / Settings)</span>
             </button>
@@ -56,8 +59,9 @@
 
             <!-- Metric Selector -->
             <div class="flex flex-col space-y-1">
-                <label for="metricSelect" class="text-xs font-bold text-gray-400 uppercase tracking-wider">X軸
-                    (X-Axis)</label>
+                <label for="metricSelect" class="text-xs font-bold text-gray-400 uppercase tracking-wider">Y軸 (Y-Axis)
+                    <span class="text-[10px] font-normal text-gray-400 ml-1">※ X軸は高齢化率で固定</span>
+                </label>
                 <div class="relative">
                     <select id="metricSelect"
                         class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none appearance-none cursor-pointer">
@@ -108,7 +112,8 @@
 
         <!-- Chart Container -->
         <!-- Chart Container -->
-        <div class="bg-white p-2 md:p-4 rounded-xl shadow-lg border border-gray-100 relative min-h-[350px] md:min-h-[500px]">
+        <div
+            class="bg-white p-2 md:p-4 rounded-xl shadow-lg border border-gray-100 relative min-h-[350px] md:min-h-[500px]">
             <canvas id="scatterChart"></canvas>
             <div class="absolute top-2 right-4 text-xs text-gray-400">
                 <span
@@ -134,7 +139,8 @@
                                 Y値 (<span id="tableYLabel">Doctors</span>)</th>
                             <th scope="col"
                                 class="px-3 py-2 md:px-6 md:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                X値 <span class="hidden md:inline">(高齢化率 Aging Rate)</span><span class="md:hidden">(高齢化率)</span></th>
+                                X値 <span class="hidden md:inline">(高齢化率 Aging Rate)</span><span
+                                    class="md:hidden">(高齢化率)</span></th>
                             <th scope="col"
                                 class="px-3 py-2 md:px-6 md:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 総人口 <span class="hidden md:inline">(Total Pop)</span></th>
