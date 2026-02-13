@@ -59,9 +59,8 @@
 
             <!-- Metric Selector -->
             <div class="flex flex-col space-y-1">
-                <label for="metricSelect" class="text-xs font-bold text-gray-400 uppercase tracking-wider">Y軸 (Y-Axis)
-                    <span class="text-[10px] font-normal text-gray-400 ml-1">※ X軸は高齢化率で固定</span>
-                </label>
+                <label for="metricSelect" class="text-xs font-bold text-gray-400 uppercase tracking-wider">Y軸
+                    (Y-Axis)</label>
                 <div class="relative">
                     <select id="metricSelect"
                         class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none appearance-none cursor-pointer">
@@ -218,6 +217,21 @@
                 }
 
                 ctx.stroke();
+
+                // Add Labels
+                const fontSize = 12;
+                ctx.font = `bold ${fontSize}px sans-serif`;
+                ctx.fillStyle = 'rgba(107, 114, 128, 0.8)';
+                ctx.textAlign = 'left';
+
+                if (xVal > left + 100) { // Only if enough space
+                    ctx.textBaseline = 'top';
+                    ctx.fillText('供給過多 (Supply Excess)', left + 10, top + 10);
+
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText('需要過多 (Demand Excess)', left + 10, bottom - 10);
+                }
+
                 ctx.restore();
             }
         };
