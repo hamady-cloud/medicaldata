@@ -154,6 +154,211 @@
 
     </main>
 
+    <!-- Footer: Site Purpose and Significance -->
+    <footer class="bg-gray-100 border-t border-gray-200 mt-12 py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-10 text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">MedicalData</h2>
+                <p class="text-gray-600">医療供給（医師・病院・病床）と高齢化を、年度×地域（都道府県／二次医療圏）で比較できるデータビューア</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 1. Why -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-600 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-sm">1</span>
+                        課題 (Why)
+                    </h3>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-4">
+                        医療提供体制の議論では「医師が足りない」「病床が多い／少ない」といった話が出る一方で、実務ではどの年の・どの指標を・どの地域単位で見ているかが揃わず、比較が曖昧になりがちです。
+                    </p>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        本ツールは、医療供給と需要側の背景（高齢化）を同一UIで年度横断・地域比較できる形に整理し、議論の前提を揃えることを目的としています。
+                    </p>
+                </div>
+
+                <!-- 2. So what -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-600 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-sm">2</span>
+                        意思決定 (So what)
+                    </h3>
+                    <ul class="space-y-3 text-sm text-gray-700">
+                        <li class="flex gap-2">
+                            <span class="font-bold text-gray-900 shrink-0">行政・医療計画:</span>
+                            <span>都道府県／二次医療圏の相対比較、年次推移の確認、論点の切り出し</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="font-bold text-gray-900 shrink-0">調査・コンサル:</span>
+                            <span>初期診断（現状把握）→追加調査（人口当たり、医療圏内偏在、アクセス等）の論点設計</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="font-bold text-gray-900 shrink-0">企画・研究:</span>
+                            <span>医療供給の変化と高齢化の進行を同じ軸で眺め、仮説を作る</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3. What -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-600 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-sm">3</span>
+                        論点と仮説 (What)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-900">論点A：年度による変化</h4>
+                            <p class="text-xs text-gray-600">2014 / 2016 / 2018 / 2020 / 2022 / 2024 で、医師・病院・病床がどう変化しているか</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-900">論点B：地域間の偏り</h4>
+                            <p class="text-xs text-gray-600">同じ年・同じ指標で、都道府県／二次医療圏間の差はどれくらいか</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-900">論点C：需要側の背景（高齢化）との併読</h4>
+                            <p class="text-xs text-gray-600">供給側の差を読むときに、高齢化率を併せて見て誤読を減らせるか</p>
+                        </div>
+                        <div class="pt-2 border-t border-dashed border-gray-200">
+                            <h4 class="text-sm font-bold text-blue-500">拡張仮説 (TODO)</h4>
+                            <p class="text-xs text-gray-600 italic">実数だけでなく、人口10万人あたり等に正規化すると“供給力”比較がさらに明確になる</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Features -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-600 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-sm">4</span>
+                        現状の到達点 (Features)
+                    </h3>
+                    <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700">
+                        <li class="flex items-center gap-1">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                            年度切替
+                        </li>
+                        <li class="flex items-center gap-1">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                            指標切替
+                        </li>
+                        <li class="flex items-center gap-1">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                            都道府県フィルタ
+                        </li>
+                        <li class="flex items-center gap-1">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                            データ一覧表示
+                        </li>
+                        <li class="flex items-center gap-1 col-span-2">
+                            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                            指標定義を明示
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 5. Evidence -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-600 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-sm">5</span>
+                        データと定義 (Evidence)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-900 border-l-4 border-blue-500 pl-2 mb-2">指標定義 (Definitions)</h4>
+                            <ul class="text-xs text-gray-700 space-y-1 font-mono">
+                                <li>高齢化率: agingRate = elderlyPop / totalPop * 100</li>
+                                <li>doctors: 医師数</li>
+                                <li>hospitals: 病院数</li>
+                                <li>beds: 病床数（全体）</li>
+                                <li>bedsPsych: 病床数（精神）</li>
+                                <li>bedsCare: 病床数（療養）</li>
+                                <li>bedsGeneral: 病床数（一般）</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-900 border-l-4 border-blue-500 pl-2 mb-2">出典 (Sources)</h4>
+                            <p class="text-xs text-gray-600 mb-2">
+                                <span class="font-bold">人口・高齢者数:</span> 「住民基本台帳に基づく人口、人口動態及び世帯数調査」（総務省）
+                            </p>
+                            <p class="text-xs text-gray-600 mb-2">
+                                <span class="font-bold">医療供給:</span> 「医師・歯科医師・薬剤師統計」（厚生労働省）
+                            </p>
+                            <p class="text-[10px] text-gray-400 mt-2 bg-gray-50 p-2 rounded border border-gray-100 italic">
+                                ※人口系と医療供給系で原典が異なるため、年次の定義（基準日）や集計範囲の差が出る可能性があります。相対比較を基本とし、厳密比較が必要な場合は原典を確認してください。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Findings -->
+                <div class="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-100 lg:col-span-3">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-700 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-200 text-blue-700 rounded-full text-sm">6</span>
+                        結果 (Findings：発見トップ3)
+                    </h3>
+                    <div class="bg-white p-4 rounded-lg border border-blue-100">
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            （例：和歌山県・二次医療圏）和歌山県内の二次医療圏で医師数（実数）を比較すると、<span class="font-bold text-blue-700">和歌山医療圏：1,808人（高齢化率32.11%、総人口411,542）</span>が最大で、次いで 田辺：305人、那賀：236人、橋本：219人、御坊：161人、新宮：144人、<span class="font-bold text-red-600">有田：125人（34.92%、68,622）</span>となる。
+                        </p>
+                        <p class="text-sm text-gray-700 leading-relaxed mt-3">
+                            このように、同じ県内でも二次医療圏によって <span class="font-bold underline decoration-blue-500">医師数（供給の実数）</span> と <span class="font-bold underline decoration-orange-500">高齢化率（背景）</span> が同時に変動するため、片方だけを見ると誤読しやすい。特に新宮は高齢化率が高く（43.04%）、人口構成を踏まえた見立てが必要である。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 7. Implications -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-600 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-sm">7</span>
+                        示唆 (Implications)
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <div class="text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded h-fit">優先度A</div>
+                            <div class="text-sm text-gray-700">実数比較で当たりを付け、次に正規化へ進む。人口10万人あたりの指標追加でさらなる比較が可能。</div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="text-xs font-bold text-orange-500 bg-orange-50 px-2 py-1 rounded h-fit">優先度B</div>
+                            <div class="text-sm text-gray-700">高齢化率を併読して論点を分ける。高齢化圏域はアクセス・連携等の論点を整理。</div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="text-xs font-bold text-yellow-500 bg-yellow-50 px-2 py-1 rounded h-fit">優先度C</div>
+                            <div class="text-sm text-gray-700">差が大きい圏域を抽出し、追加調査（施設分布、アクセス、流動等）へ接続する。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. How -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 text-white lg:col-span-2">
+                    <h3 class="flex items-center gap-2 text-lg font-bold text-blue-400 mb-4">
+                        <span class="flex items-center justify-center w-6 h-6 bg-blue-900 text-blue-400 rounded-full text-sm">8</span>
+                        再現性 (How)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-xs text-gray-400 mb-1 uppercase tracking-wider">Demo</p>
+                            <a href="https://hamady-cloud.github.io/medicaldata/" class="text-blue-400 hover:underline text-sm break-all font-mono">https://hamady-cloud.github.io/medicaldata/</a>
+                            <p class="text-xs text-gray-300 mt-4 leading-relaxed">
+                                <span class="font-bold text-gray-100">使い方:</span> 年度・指標・都道府県・地域単位を切り替えて確認。
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 mb-1 uppercase tracking-wider">データ更新 (Workflow)</p>
+                            <ol class="text-xs text-gray-300 space-y-1 list-decimal list-inside font-mono">
+                                <li>YYYY.csv を追加／更新</li>
+                                <li>convert_data.ps1 を実行</li>
+                                <li>data.js をコミットして更新</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-400 text-xs">
+                &copy; 2024-2026 MedicalData Project. Created with focus on healthcare supply-demand analysis.
+            </div>
+        </div>
+    </footer>
+
     <script>
         const chartCtx = document.getElementById('scatterChart').getContext('2d');
         let currentYear = "2024";
